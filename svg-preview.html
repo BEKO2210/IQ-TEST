@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>SVG-Preview (Dev) – IQ-Test · CHC</title>
+  <link rel="stylesheet" href="assets/css/reset.css">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <style>
+    main { max-width: 1200px; padding-block: 1.5rem 4rem; }
+    .preview-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1rem; margin-top: 1.25rem;
+    }
+    .preview-item {
+      background: var(--surface); border: 1px solid var(--line);
+      border-radius: var(--r-md); padding: 1rem; box-shadow: var(--shadow-xs);
+      display: flex; flex-direction: column; gap: 0.5rem;
+    }
+    .preview-item .id { font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-muted); letter-spacing: 0.03em; }
+    .preview-item .dom { font-size: 0.72rem; color: var(--accent); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+    .preview-item h3 { margin: 0; font-size: 0.95rem; }
+    .preview-stimulus {
+      background: var(--bg-soft); border-radius: var(--r-sm);
+      padding: 0.75rem; min-height: 220px;
+      display: flex; align-items: center; justify-content: center; color: var(--ink);
+    }
+    .preview-stimulus svg { width: 100%; max-width: 280px; height: auto; }
+    .preview-options {
+      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.35rem;
+    }
+    .preview-options .opt {
+      aspect-ratio: 1; background: var(--surface-2);
+      border: 1px solid var(--line); border-radius: var(--r-xs);
+      display: flex; align-items: center; justify-content: center;
+      padding: 0.3rem; position: relative; color: var(--ink);
+    }
+    .preview-options .opt svg { width: 100%; height: 100%; max-height: 70px; }
+    .preview-options .opt.correct { border-color: var(--ok); box-shadow: 0 0 0 2px color-mix(in srgb, var(--ok) 25%, transparent); }
+    .preview-options .opt.correct::after {
+      content: "✓"; position: absolute; top: 2px; right: 4px;
+      color: var(--ok); font-weight: 700; font-size: 0.8rem;
+    }
+    .preview-rationale { font-size: 0.82rem; color: var(--ink-muted); margin: 0; }
+    .filter-bar { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-block: 1rem; }
+    .filter-bar button {
+      padding: 0.4rem 0.8rem; border: 1px solid var(--line); background: var(--surface);
+      border-radius: var(--r-pill); font-size: 0.85rem; color: var(--ink-muted); cursor: pointer;
+    }
+    .filter-bar button.active { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-grid">
+      <a class="brand" href="index.html" aria-label="Zur Startseite">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-name">IQ-Test · Preview</span>
+      </a>
+      <nav class="site-nav" aria-label="Hauptnavigation">
+        <a href="index.html">Start</a>
+        <a href="test.html">Test</a>
+      </nav>
+      <a href="test.html" class="btn-nav">Test starten</a>
+    </div>
+  </header>
+  <main class="container">
+    <h1>SVG-Preview aller Test-Items</h1>
+    <p class="muted">Interne Entwicklerseite. Zeigt alle SVG-Stimuli und -Optionen, markiert die korrekte Antwort und liefert die Lösungsregel.</p>
+    <div class="filter-bar" id="filter-bar"></div>
+    <div id="grid" class="preview-grid"></div>
+  </main>
+
+  <script type="module">
+    const domains = ['gf','gc','gv','gs','gsm','gq'];
+    const grid = document.getElementById('grid');
+    const filterBar = document.getElementById('filter-bar');
+    let activeFilter = 'all';
+
+    const all = [];
+    for (const d of domains) {
+      const r = await fetch('data/items-' + d + '.json');
+      const items = await r.json();
+      for (const it of items) all.push(it);
+    }
+
+    const domainsPresent = [...new Set(all.map(i => i.domain))];
+    const buttons = [['all','Alle']].concat(domainsPresent.map(d => [d, d]));
+    for (const [key, label] of buttons) {
+      const b = document.createElement('button');
+      b.textContent = `${label} (${key === 'all' ? all.length : all.filter(i => i.domain === key).length})`;
+      if (key === 'all') b.classList.add('active');
+      b.addEventListener('click', () => {
+        activeFilter = key;
+        for (const btn of filterBar.children) btn.classList.toggle('active', btn === b);
+        render();
+      });
+      filterBar.appendChild(b);
+    }
+
+    function sanitizeAndInject(container, svgString) {
+      const doc = new DOMParser().parseFromString(svgString, 'image/svg+xml');
+      if (doc.querySelector('parsererror')) {
+        container.textContent = '⚠ SVG-Parse-Fehler';
+        return;
+      }
+      const root = doc.documentElement;
+      container.appendChild(document.importNode(root, true));
+    }
+
+    function render() {
+      grid.replaceChildren();
+      const filtered = activeFilter === 'all' ? all : all.filter(i => i.domain === activeFilter);
+      for (const it of filtered) {
+        const card = document.createElement('div');
+        card.className = 'preview-item';
+
+        const meta = document.createElement('div');
+        meta.innerHTML = `<span class="dom">${it.domain} · ${it.subtype}</span><br><span class="id">${it.id}  ·  b=${it.difficulty_b}</span>`;
+        card.appendChild(meta);
+
+        const stim = document.createElement('div');
+        stim.className = 'preview-stimulus';
+        if (it.stimulus_type === 'svg') sanitizeAndInject(stim, it.stimulus);
+        else if (it.stimulus_type === 'memory') {
+          const box = document.createElement('code'); box.textContent = `MEMORY: ${it.display_sequence}`;
+          stim.appendChild(box);
+        } else {
+          const p = document.createElement('p'); p.style.margin = 0; p.style.whiteSpace = 'pre-wrap';
+          p.textContent = String(it.stimulus || '');
+          stim.appendChild(p);
+        }
+        card.appendChild(stim);
+
+        const q = document.createElement('p');
+        q.style.margin = 0; q.style.fontWeight = '600';
+        q.textContent = it.question || '';
+        card.appendChild(q);
+
+        if (it.options_type === 'svg' && Array.isArray(it.options)) {
+          const optGrid = document.createElement('div');
+          optGrid.className = 'preview-options';
+          it.options.forEach((opt, i) => {
+            const o = document.createElement('div');
+            o.className = 'opt' + (i === it.correct ? ' correct' : '');
+            sanitizeAndInject(o, String(opt));
+            optGrid.appendChild(o);
+          });
+          card.appendChild(optGrid);
+        } else if (Array.isArray(it.options)) {
+          const ul = document.createElement('ol');
+          ul.style.margin = 0; ul.style.paddingLeft = '1.3rem'; ul.style.fontSize = '0.85rem';
+          it.options.forEach((opt, i) => {
+            const li = document.createElement('li');
+            li.textContent = opt;
+            if (i === it.correct) { li.style.color = 'var(--ok)'; li.style.fontWeight = '700'; }
+            ul.appendChild(li);
+          });
+          card.appendChild(ul);
+        }
+
+        if (it.rationale) {
+          const r = document.createElement('p');
+          r.className = 'preview-rationale';
+          r.textContent = 'Regel: ' + it.rationale;
+          card.appendChild(r);
+        }
+        grid.appendChild(card);
+      }
+    }
+    render();
+  </script>
+</body>
+</html>

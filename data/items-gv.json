@@ -48,7 +48,7 @@
     "difficulty_b": 1.2,
     "a_discrimination": 1.0,
     "stimulus_type": "svg",
-    "stimulus": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 160' role='img' aria-label='3D-Würfel mit Markierungen'><g fill='none' stroke='currentColor' stroke-width='3'><polygon points='40,50 110,50 110,120 40,120'/><polyline points='110,50 140,30 140,100 110,120'/><polyline points='40,50 70,30 140,30'/></g><circle cx='75' cy='85' r='8' fill='currentColor'/><polygon points='125,55 125,70 112,72 112,57' fill='currentColor' opacity='0.9'/><text x='155' y='140' font-size='16' fill='currentColor'>• vorne, ▪ rechts, Oberseite leer</text></svg>",
+    "stimulus": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 260 200' role='img' aria-label='3D-Würfel mit Kreis auf Vorderseite und Rechteck auf rechter Seite'><g fill='none' stroke='currentColor' stroke-width='3' stroke-linejoin='round'><polygon points='50,60 130,60 130,140 50,140'/><polygon points='130,60 170,30 170,110 130,140'/><polygon points='50,60 90,30 170,30 130,60'/></g><circle cx='90' cy='100' r='12' fill='currentColor'/><polygon points='145,60 160,52 160,70 145,78' fill='currentColor' opacity='0.85'/><g fill='currentColor' font-size='12' font-family='system-ui,sans-serif'><text x='90' y='170' text-anchor='middle'>Vorne: Kreis</text><text x='200' y='86' text-anchor='start'>Rechts:</text><text x='200' y='102' text-anchor='start'>Rechteck</text><text x='125' y='20' text-anchor='middle'>Oberseite: leer</text></g></svg>",
     "question": "Der dargestellte Würfel wird um 90° nach rechts (um die vertikale Achse) gedreht. Welche Ansicht entsteht? (• = Kreis, ▪ = Rechteck)",
     "options_type": "text",
     "options": [
