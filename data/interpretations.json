@@ -1,0 +1,55 @@
+{
+  "iq_bands": [
+    {"min": 0,   "max": 69,  "label": "deutlich unter dem Durchschnitt", "text": "Im vorliegenden Screening liegt das Ergebnis deutlich unter dem erwarteten Mittel der Referenzverteilung. Eine Einzelfallbetrachtung durch qualifizierte Fachpersonen wäre hier aussagekräftiger als ein reiner Zahlenwert."},
+    {"min": 70,  "max": 84,  "label": "unter dem Durchschnitt", "text": "Das Ergebnis liegt im unteren Bereich der erwarteten Verteilung. Tagesform, Motivation und Testsituation können die Leistung in Online-Screenings erheblich beeinflussen."},
+    {"min": 85,  "max": 114, "label": "im Durchschnittsbereich", "text": "Das Ergebnis liegt im breiten Durchschnittsbereich (ca. 68 % der Allgemeinbevölkerung erzielen Werte in dieser Spanne). Solide Leistungen über alle Teilbereiche."},
+    {"min": 115, "max": 129, "label": "überdurchschnittlich", "text": "Das Ergebnis liegt im überdurchschnittlichen Bereich. Rund 14 % der Vergleichsverteilung erreichen Werte in dieser Spanne."},
+    {"min": 130, "max": 144, "label": "weit überdurchschnittlich", "text": "Das Ergebnis liegt im weit überdurchschnittlichen Bereich. Nur etwa 2 % der Vergleichsverteilung erreichen vergleichbare Werte. Gleichwohl handelt es sich um ein Screening, keine formale Hochbegabungsdiagnostik."},
+    {"min": 145, "max": 200, "label": "außerhalb des sinnvoll messbaren Bereichs", "text": "Oberhalb von IQ 145 sind kurze Online-Screenings grundsätzlich nicht mehr verlässlich differenzierend; der Wert sollte als Hinweis auf sehr hohe Leistung, nicht als präzise Schätzung, verstanden werden."}
+  ],
+  "domains": {
+    "Gf": {
+      "name": "Schlussfolgerndes Denken",
+      "short": "Gf (Fluid Reasoning)",
+      "description": "Fähigkeit, neue logische Zusammenhänge zu erkennen, Regeln zu abstrahieren und in ungewohnten Situationen flexibel zu denken. Unabhängig von erworbenem Wissen.",
+      "strength": "Starke Leistungen bei der Regelerkennung in ungewohnten Aufgaben – ein Kernaspekt allgemeiner Intelligenz.",
+      "weakness": "Schwierigkeiten bei abstrakten Musteraufgaben können auf Tagesform, Unvertrautheit oder Zeitdruck zurückgehen."
+    },
+    "Gc": {
+      "name": "Verbale Intelligenz / Wissen",
+      "short": "Gc (Crystallized)",
+      "description": "Erworbenes, sprachgebundenes Wissen: Wortschatz, Allgemeinbildung, Verständnis sprachlicher Analogien.",
+      "strength": "Breit abgestütztes Wortschatz- und Weltwissen.",
+      "weakness": "Die verbale Domäne ist stark bildungs- und sprachabhängig; niedrigere Werte bedeuten nicht zwangsläufig geringe Intelligenz."
+    },
+    "Gv": {
+      "name": "Räumlich-visuelle Verarbeitung",
+      "short": "Gv (Visual Processing)",
+      "description": "Fähigkeit, mentale Bilder zu erzeugen, zu rotieren und räumliche Beziehungen zu verstehen.",
+      "strength": "Sehr gutes räumliches Vorstellungsvermögen – typisch für Berufe in Technik, Design, Architektur.",
+      "weakness": "Räumliche Aufgaben sind stark trainierbar; niedrige Werte sind oft Übungssache."
+    },
+    "Gs": {
+      "name": "Verarbeitungsgeschwindigkeit",
+      "short": "Gs (Processing Speed)",
+      "description": "Tempo, mit dem einfache kognitive Aufgaben korrekt erledigt werden.",
+      "strength": "Hohes kognitives Tempo bei einfachen Vergleichen und Zuordnungen.",
+      "weakness": "Niedrige Werte in Gs können auf Konzentration, Tagesform oder Eingabegeschwindigkeit zurückgehen – nicht zwingend auf Intelligenz."
+    },
+    "Gsm": {
+      "name": "Arbeitsgedächtnis",
+      "short": "Gsm (Short-term / Working Memory)",
+      "description": "Fähigkeit, Information kurzfristig zu halten und gleichzeitig mental zu verarbeiten.",
+      "strength": "Starkes Arbeitsgedächtnis – wichtige Ressource für Lernen und komplexes Problemlösen.",
+      "weakness": "Werte im Arbeitsgedächtnis fluktuieren stark mit Schlaf und Stress; Einzelergebnisse sind vorsichtig zu interpretieren."
+    },
+    "Gq": {
+      "name": "Numerisch-mathematisches Denken",
+      "short": "Gq (Quantitative)",
+      "description": "Sicherheit im Umgang mit Zahlen, Rechenoperationen und quantitativen Beziehungen.",
+      "strength": "Souveräner Umgang mit Zahlen, Verhältnissen und mathematischer Logik.",
+      "weakness": "Gq ist stark schul- und übungsabhängig. Niedrigere Werte betreffen meist Routine, nicht Potential."
+    }
+  },
+  "disclaimer": "Alle Interpretationen sind allgemein gehaltene Textbausteine zur groben Einordnung. Sie stellen keine psychologische Diagnose dar und ersetzen kein persönliches Fachgespräch."
+}

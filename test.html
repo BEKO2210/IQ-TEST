@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,follow">
+  <meta name="description" content="Testdurchführung – IQ-Test auf Basis der CHC-Theorie.">
+  <title>Test – IQ-Test · CHC</title>
+  <link rel="stylesheet" href="assets/css/reset.css">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <a class="skiplink" href="#main">Zum Inhalt springen</a>
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="index.html" aria-label="Zur Startseite">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-name">IQ-Test · CHC</span>
+      </a>
+      <nav class="site-nav" aria-label="Hauptnavigation">
+        <a href="index.html">Start</a>
+        <a href="ueber.html">Über</a>
+        <a href="methodik.html">Methodik</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container test-shell">
+    <div id="test-engine-root">
+      <!-- Phase 1: Disclaimer & optionale Demografie -->
+      <form id="disclaimer-form" class="disclaimer-form" aria-labelledby="disc-title">
+        <h2 id="disc-title">Vor dem Start</h2>
+        <div class="notice notice-strong">
+          <p><strong>Dieser Test ist ein Selbsteinschätzungsinstrument zur Bildung und Unterhaltung.</strong>
+             Er ersetzt keine professionelle psychologische Diagnostik, keine standardisierten
+             klinischen Intelligenzverfahren und liefert keine medizinisch oder juristisch
+             verwertbaren Ergebnisse.</p>
+          <p>Die Aufgaben sind eigenständig konstruiert, in Anlehnung an die Cattell-Horn-Carroll-Theorie.
+             Eine offizielle Normierung an einer repräsentativen Stichprobe liegt <strong>nicht</strong> vor;
+             Ergebnisse sind Orientierungswerte.</p>
+          <p>Die Durchführung erfolgt freiwillig. Der Test dauert 35–45 Minuten. Sie können jederzeit abbrechen.</p>
+          <p>Details: <a href="haftung.html">Haftungsausschluss</a>, <a href="datenschutz.html">Datenschutz</a>.</p>
+        </div>
+
+        <fieldset class="form-row">
+          <legend style="font-weight:600">Optionale Angaben (nur zur eigenen Kontextualisierung)</legend>
+          <p class="muted text-small">Diese Angaben werden <strong>nicht</strong> übermittelt und dienen nur
+             Ihrer eigenen Einordnung des Ergebnisses. Sie sind vollständig freiwillig.</p>
+          <label for="age">Altersgruppe</label>
+          <select id="age" name="age">
+            <option value="">— keine Angabe —</option>
+            <option value="u18">unter 18</option>
+            <option value="18-24">18–24</option>
+            <option value="25-34">25–34</option>
+            <option value="35-44">35–44</option>
+            <option value="45-54">45–54</option>
+            <option value="55-64">55–64</option>
+            <option value="65+">65 und älter</option>
+          </select>
+          <label for="gender" style="margin-top:0.75rem">Geschlecht</label>
+          <select id="gender" name="gender">
+            <option value="">— keine Angabe —</option>
+            <option value="m">männlich</option>
+            <option value="w">weiblich</option>
+            <option value="d">divers</option>
+          </select>
+        </fieldset>
+
+        <div class="checkbox-row">
+          <input type="checkbox" id="accept" name="accept" required>
+          <label for="accept">Ich habe den Haftungsausschluss gelesen und möchte den Test freiwillig
+             durchführen. Ich verstehe, dass es sich um ein Screening ohne diagnostische Aussagekraft
+             handelt.</label>
+        </div>
+        <div class="actions-row" style="justify-content:flex-start">
+          <button type="submit" class="btn btn-primary">Test beginnen</button>
+          <a href="index.html" class="btn btn-ghost">Abbrechen</a>
+        </div>
+      </form>
+
+      <!-- Phase 2: Test-Ablauf -->
+      <div id="test-shell" hidden>
+        <div class="progress-wrap" role="region" aria-label="Testfortschritt">
+          <span id="progress-label">Aufgabe – von –</span>
+          <div class="progress-bar" aria-hidden="true"><div id="progress-bar-fill" class="progress-bar-fill"></div></div>
+          <span id="timer" aria-live="polite">–:––</span>
+        </div>
+
+        <div class="item-panel" aria-live="polite">
+          <div id="stimulus" class="item-stimulus"></div>
+          <p id="question" class="item-question"></p>
+          <div id="options" class="options-grid" role="group" aria-label="Antwortoptionen"></div>
+          <div class="actions-row">
+            <button id="next-button" type="button" class="btn btn-primary" disabled hidden>Antwort bestätigen</button>
+          </div>
+        </div>
+
+        <p id="test-error" class="notice notice-warn" role="alert" hidden></p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <nav aria-label="Rechtliche Hinweise">
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="haftung.html">Haftungsausschluss</a>
+        <a href="nutzungsbedingungen.html">Nutzungsbedingungen</a>
+      </nav>
+      <p class="copyright">© <span id="year"></span> Belkis Aslani · Alle Rechte vorbehalten</p>
+    </div>
+  </footer>
+  <script type="module" src="assets/js/app.js"></script>
+</body>
+</html>

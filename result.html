@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,follow">
+  <meta name="description" content="Ergebnisseite des IQ-Tests · CHC.">
+  <title>Ergebnis – IQ-Test · CHC</title>
+  <link rel="stylesheet" href="assets/css/reset.css">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/print.css" media="print">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <a class="skiplink" href="#main">Zum Inhalt springen</a>
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="index.html" aria-label="Zur Startseite">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-name">IQ-Test · CHC</span>
+      </a>
+      <nav class="site-nav" aria-label="Hauptnavigation">
+        <a href="index.html">Start</a>
+        <a href="ueber.html">Über</a>
+        <a href="methodik.html">Methodik</a>
+        <a href="test.html" class="btn-nav">Neuer Test</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container content">
+    <div id="result-root">
+      <section id="result-empty" hidden>
+        <h1>Kein Ergebnis gefunden</h1>
+        <p>Es liegt keine aktuelle Testsitzung in Ihrem Browser vor. Bitte führen Sie den Test durch,
+           um ein Ergebnis zu erhalten.</p>
+        <p><a href="test.html" class="btn btn-primary">Zum Test</a></p>
+      </section>
+
+      <section id="result-content">
+        <h1>Ihr Ergebnis</h1>
+
+        <div class="result-headline">
+          <div class="iq-big" aria-labelledby="iq-big-label">
+            <div id="iq-big-label" class="label">Gesamt-IQ</div>
+            <div class="value" id="iq-value">–</div>
+            <div class="range">95 %-KI: <span id="iq-range">–</span></div>
+          </div>
+          <div class="iq-meta">
+            <div class="stat">
+              <div class="label">Prozentrang</div>
+              <div class="value"><span id="iq-percentile">–</span>%</div>
+              <div class="muted text-small">gegenüber theoretischer Referenzverteilung</div>
+            </div>
+            <div class="stat">
+              <div class="label">Standardmessfehler (SEM)</div>
+              <div class="value">±<span id="iq-sem">–</span></div>
+              <div class="muted text-small">bei angenommener Reliabilität r<sub>xx</sub> = 0,85</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="notice notice-strong" role="note">
+          <p><strong>Wichtig:</strong> Der angegebene Zahlenwert ist eine Schätzung auf Basis theoretischer
+             Normwerte, keine diagnostische Aussage. Individuelle Werte schwanken mit Tagesform, Konzentration
+             und Aufgabenvertrautheit. Das Konfidenzintervall drückt diese Unsicherheit aus: Ihr „wahrer“
+             Wert liegt mit 95 % Wahrscheinlichkeit im angegebenen Bereich – und auch das nur unter den
+             Annahmen des Messmodells (siehe <a href="methodik.html">Methodik</a>).</p>
+        </div>
+
+        <h2>Profil nach CHC-Domänen</h2>
+        <div class="radar-wrap"><div id="radar-container" aria-label="Radar-Diagramm der Domänenwerte"></div></div>
+        <table class="domain-table" aria-label="Domänenwerte">
+          <thead>
+            <tr>
+              <th scope="col">Domäne</th>
+              <th scope="col">Bezeichnung (CHC)</th>
+              <th scope="col" class="num">Subtest-IQ</th>
+              <th scope="col" class="num">z-Wert</th>
+            </tr>
+          </thead>
+          <tbody><!-- wird per JS gefüllt --></tbody>
+        </table>
+
+        <h2>Einordnung des Gesamtwerts</h2>
+        <p class="lead"><strong id="band-label">–</strong></p>
+        <p id="band-text">–</p>
+
+        <div class="grid-3" style="margin-top:1.5rem">
+          <div class="card">
+            <h3>Stärken</h3>
+            <ul id="strengths-list"></ul>
+          </div>
+          <div class="card">
+            <h3>Entwicklungsfelder</h3>
+            <ul id="weaknesses-list"></ul>
+          </div>
+          <div class="card">
+            <h3>Nächste Schritte</h3>
+            <p>Bei Fragen zu tatsächlicher kognitiver Leistungsfähigkeit wenden Sie sich an
+               approbierte Psychologinnen und Psychologen. Dieser Test ersetzt keine Diagnostik.</p>
+            <p class="muted text-small">Siehe <a href="haftung.html">Haftungsausschluss</a>.</p>
+          </div>
+        </div>
+
+        <section aria-labelledby="consent-title" class="card no-print" style="margin-top:2rem">
+          <h2 id="consent-title" style="margin-top:0">Lokale Speicherung Ihres Ergebnisses</h2>
+          <p>Sie können Ihr Ergebnis zum späteren Nachschauen lokal in Ihrem Browser speichern. Die Daten
+             verbleiben ausschließlich auf Ihrem Gerät und werden nicht an Dritte übertragen.</p>
+          <div class="checkbox-row">
+            <input type="checkbox" id="local-store-consent">
+            <label for="local-store-consent">Ich willige ein, dass mein Ergebnis lokal im Browser
+               gespeichert wird (Einwilligung jederzeit widerrufbar).</label>
+          </div>
+          <p id="local-store-status" class="muted text-small" role="status"></p>
+          <div class="actions-row" style="justify-content:flex-start">
+            <button id="clear-local-data" type="button" class="btn">Lokale Daten löschen</button>
+            <button id="print-button" type="button" class="btn">Als PDF speichern / drucken</button>
+            <button id="retake-button" type="button" class="btn btn-primary">Neuer Test</button>
+          </div>
+        </section>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <nav aria-label="Rechtliche Hinweise">
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="haftung.html">Haftungsausschluss</a>
+        <a href="nutzungsbedingungen.html">Nutzungsbedingungen</a>
+      </nav>
+      <p class="copyright">© <span id="year"></span> Belkis Aslani · Alle Rechte vorbehalten</p>
+    </div>
+  </footer>
+  <script type="module" src="assets/js/app.js"></script>
+</body>
+</html>
