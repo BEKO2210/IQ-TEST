@@ -1,7 +1,39 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-label="IQ-Test Logo">
-  <rect x="2" y="2" width="60" height="60" rx="12" fill="#1e3a8a"/>
-  <g fill="#ffffff" font-family="system-ui, sans-serif" font-weight="700">
-    <text x="32" y="40" font-size="28" text-anchor="middle">IQ</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="IQ-Test · CHC">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2b3a7a"/>
+      <stop offset="1" stop-color="#0b1332"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f0d39d"/>
+      <stop offset="1" stop-color="#a47840"/>
+    </linearGradient>
+    <radialGradient id="gloss" cx="0.28" cy="0.2" r="0.65">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
+      <stop offset="0.7" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="url(#bg)"/>
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="url(#gloss)"/>
+  <polygon points="32,14 47.59,23 47.59,41 32,50 16.41,41 16.41,23"
+           fill="none" stroke="#ffffff" stroke-opacity="0.55"
+           stroke-width="1.1" stroke-linejoin="round"/>
+  <g stroke="#ffffff" stroke-opacity="0.28" stroke-width="0.8" stroke-linecap="round">
+    <line x1="32" y1="32" x2="32" y2="14"/>
+    <line x1="32" y1="32" x2="47.59" y2="23"/>
+    <line x1="32" y1="32" x2="47.59" y2="41"/>
+    <line x1="32" y1="32" x2="32" y2="50"/>
+    <line x1="32" y1="32" x2="16.41" y2="41"/>
+    <line x1="32" y1="32" x2="16.41" y2="23"/>
   </g>
-  <circle cx="50" cy="14" r="4" fill="#fafafa"/>
+  <g fill="#ffffff">
+    <circle cx="32"    cy="14" r="2.2"/>
+    <circle cx="47.59" cy="23" r="2.2"/>
+    <circle cx="47.59" cy="41" r="2.2"/>
+    <circle cx="32"    cy="50" r="2.2"/>
+    <circle cx="16.41" cy="41" r="2.2"/>
+    <circle cx="16.41" cy="23" r="2.2"/>
+  </g>
+  <circle cx="32" cy="32" r="4.2" fill="url(#gold)"/>
+  <circle cx="32" cy="32" r="4.2" fill="none" stroke="#f8e6bf" stroke-opacity="0.55" stroke-width="0.45"/>
 </svg>

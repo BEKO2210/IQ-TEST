@@ -1,5 +1,42 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" aria-label="IQ-Test Icon 192">
-  <rect width="192" height="192" rx="36" fill="#1e3a8a"/>
-  <text x="96" y="118" font-family="system-ui, sans-serif" font-size="82" font-weight="700" fill="#ffffff" text-anchor="middle">IQ</text>
-  <circle cx="150" cy="42" r="10" fill="#fafafa"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" role="img" aria-label="IQ-Test · CHC">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2b3a7a"/>
+      <stop offset="1" stop-color="#0b1332"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f0d39d"/>
+      <stop offset="1" stop-color="#a47840"/>
+    </linearGradient>
+    <radialGradient id="gloss" cx="0.28" cy="0.2" r="0.65">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
+      <stop offset="0.7" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect x="6" y="6" width="180" height="180" rx="40" fill="url(#bg)"/>
+  <rect x="6" y="6" width="180" height="180" rx="40" fill="url(#gloss)"/>
+  <rect x="9" y="9" width="174" height="174" rx="37"
+        fill="none" stroke="#ffffff" stroke-opacity="0.09" stroke-width="1"/>
+  <!-- Outer hexagon (r = 54, center 96,96) -->
+  <polygon points="96,42 142.77,69 142.77,123 96,150 49.23,123 49.23,69"
+           fill="none" stroke="#ffffff" stroke-opacity="0.6"
+           stroke-width="3" stroke-linejoin="round"/>
+  <g stroke="#ffffff" stroke-opacity="0.3" stroke-width="2.2" stroke-linecap="round">
+    <line x1="96" y1="96" x2="96"    y2="42"/>
+    <line x1="96" y1="96" x2="142.77" y2="69"/>
+    <line x1="96" y1="96" x2="142.77" y2="123"/>
+    <line x1="96" y1="96" x2="96"    y2="150"/>
+    <line x1="96" y1="96" x2="49.23" y2="123"/>
+    <line x1="96" y1="96" x2="49.23" y2="69"/>
+  </g>
+  <g fill="#ffffff">
+    <circle cx="96"     cy="42"  r="6"/>
+    <circle cx="142.77" cy="69"  r="6"/>
+    <circle cx="142.77" cy="123" r="6"/>
+    <circle cx="96"     cy="150" r="6"/>
+    <circle cx="49.23"  cy="123" r="6"/>
+    <circle cx="49.23"  cy="69"  r="6"/>
+  </g>
+  <circle cx="96" cy="96" r="11.5" fill="url(#gold)"/>
+  <circle cx="96" cy="96" r="11.5" fill="none" stroke="#f8e6bf" stroke-opacity="0.55" stroke-width="1.2"/>
 </svg>

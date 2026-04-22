@@ -150,16 +150,10 @@ body {
 }
 .brand:hover { background: var(--surface-2); text-decoration: none; }
 .brand-mark {
-  position: relative;
-  width: 26px; height: 26px; border-radius: 8px;
-  background:
-    linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 70%, var(--highlight) 140%);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), var(--shadow-xs);
-}
-.brand-mark::after {
-  content: ""; position: absolute; inset: 6px;
-  border-radius: 4px;
-  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.55), transparent 55%);
+  width: 28px; height: 28px;
+  background: url("../img/favicon.svg") center / contain no-repeat;
+  filter: drop-shadow(0 1px 2px rgba(15,23,42,0.18));
+  flex-shrink: 0;
 }
 .brand-name { white-space: nowrap; }
 
