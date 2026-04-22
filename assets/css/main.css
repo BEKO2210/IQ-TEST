@@ -423,7 +423,8 @@ main > section.container:not(.hero) > p {
 #test-engine-root { flex: 1; display: flex; flex-direction: column; min-height: 0; }
 #test-shell { flex: 1; display: flex; flex-direction: column; min-height: 0; }
 .progress-wrap {
-  display: flex; align-items: center; gap: 0.9rem; margin-bottom: 1rem;
+  flex-shrink: 0;
+  display: flex; align-items: center; gap: 0.9rem; margin-bottom: 0.85rem;
   flex-wrap: wrap;
 }
 .progress-bar {
@@ -457,44 +458,50 @@ main > section.container:not(.hero) > p {
 }
 @keyframes pulse { 50% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--danger) 18%, transparent); } }
 
-/* Item-Panel – nutzt gesamte Resthöhe, interner Scroll nur im Stimulus */
+/* Item-Panel – Flex-Column mit fixem Footer (Frage + Optionen + Button) */
 .item-panel {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--r-lg);
-  padding: clamp(1rem, 2.5vw, 1.75rem);
+  padding: clamp(0.85rem, 2vw, 1.4rem);
   box-shadow: var(--shadow-md);
-  flex: 1; min-height: 0;
-  display: flex; flex-direction: column; gap: 0.75rem;
-}
-.item-stimulus {
   flex: 1 1 auto; min-height: 0;
+  display: flex; flex-direction: column; gap: 0.65rem;
+  overflow: hidden;       /* Panel selbst scrollt nie */
+}
+/* Stimulus ist der EINZIGE schrumpfbare Bereich. Bei Bedarf scrollt ER intern. */
+.item-stimulus {
+  flex: 1 1 0; min-height: 0;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   text-align: center; gap: 0.4rem;
   padding: 0.25rem 0;
   overflow-y: auto;
+  overscroll-behavior: contain;
 }
 .item-svg {
-  width: auto; max-width: min(380px, 100%);
-  max-height: min(42vh, 360px); height: auto;
+  width: auto; max-width: min(360px, 100%);
+  max-height: 100%; height: auto;
   color: var(--ink);
   filter: drop-shadow(0 2px 6px rgba(15,23,42,0.08));
 }
 .item-text {
-  font-size: 1.02rem; color: var(--ink);
+  font-size: 1rem; color: var(--ink);
   white-space: pre-wrap; margin: 0;
   max-width: 58ch;
 }
+/* Alles unterhalb vom Stimulus bleibt immer sichtbar. */
 .item-question {
+  flex-shrink: 0;
   font-weight: 600; font-size: 1rem; color: var(--ink);
   letter-spacing: -0.005em; text-align: center;
   margin: 0;
 }
 
-/* Options-Grid – symmetrisches Layout je Anzahl, nie Scrollen */
+/* Options-Grid – symmetrisches Layout je Anzahl, nie Scrollen, fest verankert */
 .options-grid {
+  flex-shrink: 0;
   display: grid;
-  gap: 0.55rem;
+  gap: 0.5rem;
   width: 100%;
   margin-inline: auto;
 }
@@ -564,11 +571,25 @@ main > section.container:not(.hero) > p {
 }
 .options-grid[data-mode="svg"] .option { flex-direction: column; text-align: center; padding: 0.55rem; gap: 0.4rem; }
 .options-grid[data-mode="svg"] .option-marker { width: 22px; height: 22px; font-size: 0.72rem; }
+.options-grid[data-mode="svg"] .option-content svg { max-width: 64px; max-height: 64px; }
 
+/* Actions-Row ist fest verankert unten im Panel und immer sichtbar */
 .actions-row {
+  flex-shrink: 0;
   display: flex; justify-content: center; align-items: center;
   gap: 0.6rem; flex-wrap: wrap;
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
+}
+#next-button { min-width: 220px; }
+@media (max-width: 520px) { #next-button { min-width: 0; width: 100%; } }
+
+/* Sicherheitsnetz: sehr niedrige Viewports (Landscape-Mobile)
+   – wenn Stimulus trotz Schrumpfen nicht genug Platz findet, darf die Seite
+   statt des Panels scrollen. Der Button bleibt dadurch erreichbar. */
+@media (max-height: 560px) {
+  .test-shell { min-height: 0; padding-block: 0.75rem 1rem; }
+  .item-panel { overflow: visible; flex: 0 0 auto; }
+  .item-stimulus { overflow-y: visible; min-height: 160px; }
 }
 
 /* Block-Intro */
