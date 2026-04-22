@@ -55,6 +55,38 @@ function fallbackPlaceholder(label) {
   return div;
 }
 
+// --- Transformations-Icons (inline SVG, 24×24, stroke=currentColor) ---
+// Bewusst minimalistisch und Font-unabhängig, damit sie auf allen Geräten
+// identisch aussehen (statt Unicode-Pfeile ⟳/⟲/→).
+const TRANSFORM_ICONS = {
+  "rotate-cw": '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3.5-7.1"/><polyline points="21 4 21 10 15 10"/></svg>',
+  "rotate-ccw": '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3.5-7.1"/><polyline points="3 4 3 10 9 10"/></svg>',
+  "rotate-180": '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3"/><polyline points="18 2 18 7 13 7"/><path d="M20 12a8 8 0 0 1-14 5.3"/><polyline points="6 22 6 17 11 17"/></svg>',
+  "mirror-v": '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="3" x2="12" y2="21" stroke-dasharray="3 3"/><polygon points="4 6 10 12 4 18" fill="currentColor" stroke="none"/><polygon points="20 6 14 12 20 18" fill="currentColor" stroke="none"/></svg>',
+  "mirror-h": '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12" stroke-dasharray="3 3"/><polygon points="6 4 12 10 18 4" fill="currentColor" stroke="none"/><polygon points="6 20 12 14 18 20" fill="currentColor" stroke="none"/></svg>',
+  "fold": '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h10l6 6v8H4z"/><polyline points="14 5 14 11 20 11"/></svg>',
+  "search": '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="7"/><line x1="15" y1="15" x2="21" y2="21"/></svg>',
+  "question": '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.5c-0.8 0.5-1 1-1 2"/><circle cx="12" cy="17" r="0.8" fill="currentColor"/></svg>'
+};
+
+function renderTransformationBadge(transformation) {
+  if (!transformation) return null;
+  const wrap = document.createElement("div");
+  wrap.className = "transform-badge";
+  const iconKey = transformation.icon || "question";
+  const iconSvg = TRANSFORM_ICONS[iconKey] || TRANSFORM_ICONS.question;
+  const iconBox = document.createElement("span");
+  iconBox.className = "transform-badge-icon";
+  const parsed = sanitizeSVG(iconSvg, `icon:${iconKey}`);
+  if (parsed) iconBox.appendChild(document.importNode(parsed, true));
+  wrap.appendChild(iconBox);
+  const text = document.createElement("span");
+  text.className = "transform-badge-label";
+  text.textContent = transformation.label || "";
+  wrap.appendChild(text);
+  return wrap;
+}
+
 function sanitizeNode(node) {
   const toRemove = [];
   for (const child of Array.from(node.children)) {
@@ -91,14 +123,17 @@ function sanitizeNode(node) {
  */
 export function renderStimulus(container, item) {
   container.replaceChildren();
+  const badge = renderTransformationBadge(item.transformation);
   if (item.stimulus_type === "svg") {
     const svg = sanitizeSVG(item.stimulus, item.id);
     if (svg) {
       svg.setAttribute("class", "item-svg");
       container.appendChild(document.importNode(svg, true));
+      if (badge) container.appendChild(badge);
       return;
     }
     container.appendChild(fallbackPlaceholder(`Grafik zu ${item.id} konnte nicht geladen werden`));
+    if (badge) container.appendChild(badge);
     return;
   }
   if (item.stimulus_type === "memory") {
@@ -118,6 +153,7 @@ export function renderStimulus(container, item) {
     p.textContent = line;
     container.appendChild(p);
   }
+  if (badge) container.appendChild(badge);
 }
 
 /**
