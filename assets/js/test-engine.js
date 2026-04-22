@@ -71,6 +71,35 @@ function groupByDomain(items) {
   return map;
 }
 
+// --- Options-Shuffle (Fisher-Yates, deterministisch pro Session-Seed) ---
+
+function seededRng(seed) {
+  let s = seed >>> 0;
+  return () => {
+    s = (s * 1664525 + 1013904223) >>> 0;
+    return s / 0x100000000;
+  };
+}
+
+function shuffleOptions(item, rng) {
+  const opts = Array.isArray(item.options) ? item.options : [];
+  // Binäre Optionen (gleich/verschieden u.ä.) behalten ihre Reihenfolge.
+  if (opts.length < 3) return item;
+  const indices = opts.map((_, i) => i);
+  for (let i = indices.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [indices[i], indices[j]] = [indices[j], indices[i]];
+  }
+  const newOpts = indices.map((i) => opts[i]);
+  const newCorrect = indices.indexOf(item.correct);
+  return { ...item, options: newOpts, correct: newCorrect };
+}
+
+function shuffleAllItems(items, seed) {
+  const rng = seededRng(seed);
+  return items.map((it) => shuffleOptions(it, rng));
+}
+
 function buildSequence(grouped) {
   const seq = [];
   for (const d of DOMAIN_ORDER) {
@@ -136,14 +165,22 @@ export class TestEngine {
   }
 
   async init() {
-    [this.items, this.norms] = await Promise.all([loadItems(), loadNorms()]);
+    const [rawItems, norms] = await Promise.all([loadItems(), loadNorms()]);
+    this.norms = norms;
+
+    // Seed pro Session → Reihenfolge bleibt stabil, falls Tab neu geladen wird.
+    const resumed = loadSessionProgress();
+    const seed = resumed?.state?.seed ?? (Date.now() ^ Math.floor(Math.random() * 0xffffffff));
+    this.items = shuffleAllItems(rawItems, seed);
+
     const grouped = groupByDomain(this.items);
     this.sequence = buildSequence(grouped);
-    const resumed = loadSessionProgress();
+
     if (resumed && resumed.sequenceSize === this.sequence.length) {
       this.state = resumed.state;
     } else {
       this.state.startedAt = new Date().toISOString();
+      this.state.seed = seed;
     }
     this._render();
   }
