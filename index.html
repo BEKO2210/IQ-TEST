@@ -134,13 +134,6 @@
       <p class="copyright">© <span id="year"></span> Belkis Aslani · Alle Rechte vorbehalten</p>
     </div>
   </footer>
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-    if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('service-worker.js').catch(() => { /* ignore */ });
-      });
-    }
-  </script>
+  <script type="module" src="assets/js/app.js"></script>
 </body>
 </html>

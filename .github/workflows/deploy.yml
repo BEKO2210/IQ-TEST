@@ -1,0 +1,61 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Inject build ID into service worker
+        run: |
+          # Build-ID = kurzer SHA + ISO-Timestamp, z. B. 476e011-2026-04-22T10-55-07Z
+          BUILD_ID="$(git rev-parse --short HEAD)-$(date -u +%Y-%m-%dT%H-%M-%SZ)"
+          echo "Build ID: $BUILD_ID"
+          sed -i "s|__BUILD_ID__|${BUILD_ID}|g" service-worker.js
+          echo "--- Versionszeile nach Injection ---"
+          grep -n "^const BUILD_ID" service-worker.js || true
+          grep -n "^const VERSION" service-worker.js || true
+
+      - name: Inject build meta tag into HTML files
+        run: |
+          BUILD_ID="$(git rev-parse --short HEAD)-$(date -u +%Y-%m-%dT%H-%M-%SZ)"
+          for f in *.html; do
+            # Meta-Tag direkt nach <head> einfügen (falls noch nicht vorhanden).
+            if ! grep -q 'name="app-build"' "$f"; then
+              sed -i "s|<head>|<head>\n  <meta name=\"app-build\" content=\"${BUILD_ID}\">|" "$f"
+            fi
+          done
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
