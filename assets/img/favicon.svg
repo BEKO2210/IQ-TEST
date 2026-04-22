@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-label="IQ-Test Logo">
+  <rect x="2" y="2" width="60" height="60" rx="12" fill="#1e3a8a"/>
+  <g fill="#ffffff" font-family="system-ui, sans-serif" font-weight="700">
+    <text x="32" y="40" font-size="28" text-anchor="middle">IQ</text>
+  </g>
+  <circle cx="50" cy="14" r="4" fill="#fafafa"/>
+</svg>

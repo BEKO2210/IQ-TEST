@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="index,follow">
+  <meta name="description" content="Methodik, theoretisches Fundament und Berechnungsformeln des IQ-Tests.">
+  <title>Methodik – IQ-Test · CHC</title>
+  <link rel="stylesheet" href="assets/css/reset.css">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <a class="skiplink" href="#main">Zum Inhalt springen</a>
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="index.html" aria-label="Zur Startseite">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-name">IQ-Test · CHC</span>
+      </a>
+      <nav class="site-nav" aria-label="Hauptnavigation">
+        <a href="index.html">Start</a>
+        <a href="ueber.html">Über</a>
+        <a href="methodik.html">Methodik</a>
+        <a href="test.html" class="btn-nav">Test starten</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container content">
+    <h1>Methodik</h1>
+    <p class="lead">Diese Seite beschreibt das theoretische Fundament, die Itemkonstruktion und die
+       mathematische Auswertung. Sie ist bewusst transparent gehalten, damit Sie Ihre Ergebnisse
+       selbst einordnen können.</p>
+
+    <section aria-labelledby="m1">
+      <h2 id="m1">1. Theoretisches Modell: Cattell-Horn-Carroll</h2>
+      <p>Grundlage ist die heute führende integrative Theorie kognitiver Fähigkeiten, die
+         <strong>Cattell-Horn-Carroll-Theorie</strong> (CHC). Sie strukturiert Intelligenz in drei Schichten
+         (Strata):</p>
+      <ul>
+        <li><strong>Stratum III:</strong> die allgemeine Intelligenz (g-Faktor).</li>
+        <li><strong>Stratum II:</strong> ca. 10 sogenannte Broad Abilities (z. B. Gf, Gc, Gv, Gs, Gsm, Gq, Glr, Ga).</li>
+        <li><strong>Stratum I:</strong> engere, aufgabenspezifische Fähigkeiten, die sich in einzelnen Items zeigen.</li>
+      </ul>
+      <p>Im vorliegenden Test werden <strong>sechs Broad Abilities</strong> erfasst:
+         Gf (Fluid Reasoning), Gc (Crystallized), Gv (Visual Processing), Gs (Processing Speed),
+         Gsm (Short-term / Working Memory) und Gq (Quantitative Knowledge).</p>
+    </section>
+
+    <section aria-labelledby="m2">
+      <h2 id="m2">2. Itemkonstruktion</h2>
+      <p>Alle Aufgaben sind <strong>eigenständige Neukonstruktionen</strong>. Es wurden keine Items aus
+         urheberrechtlich geschützten Testverfahren (z. B. Raven, WAIS/WISC, IST, CFT, BOMAT)
+         übernommen. Übernommen wurden lediglich die allgemein bekannten <em>Konstruktionsprinzipien</em>
+         (Matrizen, Zahlenreihen, verbale Analogien, Mentalrotation, Papierfalten, Ziffernspanne,
+         Zeichenvergleich). Diese Prinzipien gehören zum Stand der psychometrischen Wissenschaft.</p>
+      <p>Jedes Item hat folgende Parameter:</p>
+      <ul>
+        <li><code>id</code>, <code>domain</code>, <code>subtype</code></li>
+        <li><code>difficulty_b</code> – Schwierigkeitsparameter auf Logit-Skala (−3 … +3), durch
+            Expertenurteil geschätzt (Rasch-kompatibel).</li>
+        <li><code>a_discrimination</code> – Trennschärfe, default 1,0.</li>
+        <li><code>time_limit_sec</code> – Zeitlimit pro Aufgabe.</li>
+        <li><code>rationale</code> – dokumentierte Lösungsregel (nicht angezeigt während des Tests).</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="m3">
+      <h2 id="m3">3. Berechnung Schritt für Schritt</h2>
+
+      <h3>3.1 Rohwert pro Domäne</h3>
+      <p>Korrekte Antworten werden nach Schwierigkeit gewichtet:</p>
+      <pre class="formula">raw<sub>d</sub> = Σ<sub>i ∈ d</sub>  correct<sub>i</sub> · (1 + 0,3 · b<sub>i</sub>)</pre>
+      <p>Damit zählen schwierige Items mehr als leichte. Die Gewichtung ist bewusst mild (0,3) gewählt,
+         um Punktrauschen bei einzelnen Items zu begrenzen.</p>
+
+      <h3>3.2 Standardisierung (z-Transformation)</h3>
+      <p>Pro Domäne wird der Rohwert gegen eine <strong>theoretische Referenzverteilung</strong>
+         standardisiert:</p>
+      <pre class="formula">z<sub>d</sub> = (raw<sub>d</sub> − μ<sub>d</sub>) / σ<sub>d</sub></pre>
+      <p>μ<sub>d</sub> und σ<sub>d</sub> werden aus der Rasch-Erwartung bei mittlerer Fähigkeit
+         (θ = 0) abgeleitet:</p>
+      <pre class="formula">p<sub>i</sub> = 1 / (1 + exp(b<sub>i</sub>))
+E[raw<sub>d</sub>] = Σ (1 + 0,3 · b<sub>i</sub>) · p<sub>i</sub>
+Var[raw<sub>d</sub>] = Σ (1 + 0,3 · b<sub>i</sub>)² · p<sub>i</sub> · (1 − p<sub>i</sub>)
+σ<sub>d</sub> = √Var[raw<sub>d</sub>]</pre>
+      <p>Die konkreten Werte pro Domäne sind in <code>data/norms.json</code> hinterlegt und lassen sich
+         aus <code>items-*.json</code> reproduzieren.</p>
+
+      <h3>3.3 Gesamt-z als gewichteter Mittelwert</h3>
+      <pre class="formula">z<sub>total</sub> = 0,30·z<sub>Gf</sub> + 0,20·z<sub>Gc</sub> + 0,15·z<sub>Gv</sub> + 0,10·z<sub>Gs</sub> + 0,10·z<sub>Gsm</sub> + 0,15·z<sub>Gq</sub></pre>
+      <p>Die Gewichte sind Annäherungen an typische g-Ladungen aus der CHC-Literatur
+         (Carroll 1993; McGrew 2009). Sie sind nicht aus einer eigenen Stichprobe geschätzt.</p>
+
+      <h3>3.4 Transformation in die Wechsler-IQ-Skala</h3>
+      <pre class="formula">IQ = 100 + 15 · z<sub>total</sub></pre>
+      <p>Der Anzeigebereich ist auf [55, 145] begrenzt, da außerhalb dieses Bereichs kurze
+         Online-Screenings grundsätzlich nicht mehr verlässlich differenzieren.</p>
+
+      <h3>3.5 Konfidenzintervall</h3>
+      <p>Bei angenommener Reliabilität r<sub>xx</sub> = 0,85 (theoretischer Annahmewert, transparent
+         dokumentiert) ergibt sich der Standardmessfehler:</p>
+      <pre class="formula">SEM = SD · √(1 − r<sub>xx</sub>) = 15 · √0,15 ≈ 5,81</pre>
+      <p>Das 95 %-Konfidenzintervall ist damit IQ ± 1,96 · SEM ≈ IQ ± 11. Diese Unschärfe wird auf
+         der Ergebnisseite stets mit ausgegeben.</p>
+
+      <h3>3.6 Prozentrang</h3>
+      <pre class="formula">PR = Φ(z<sub>total</sub>) · 100</pre>
+      <p>Φ ist die Verteilungsfunktion der Standardnormalverteilung. Numerisch wird die
+         Abramowitz-Stegun-Approximation 7.1.26 verwendet (absolute Abweichung &lt; 1,5 · 10⁻⁷).</p>
+    </section>
+
+    <section aria-labelledby="m4">
+      <h2 id="m4">4. Grenzen und Unsicherheiten</h2>
+      <ul>
+        <li><strong>Keine empirische Normstichprobe:</strong> die verwendeten μ und σ sind
+            theoretisch abgeleitet, nicht aus einer repräsentativen Stichprobe der deutschen
+            Allgemeinbevölkerung geschätzt.</li>
+        <li><strong>Reliabilitätsannahme:</strong> r<sub>xx</sub> = 0,85 ist ein plausibler, aber nicht
+            empirisch geprüfter Annahmewert. Tatsächliche Reliabilität eines kurzen Online-Tests
+            dürfte je nach Ausführungsbedingungen niedriger liegen.</li>
+        <li><strong>Tagesform / Situation:</strong> Online-Tests sind sensibel gegenüber Konzentration,
+            Müdigkeit, technischer Umgebung und Übung.</li>
+        <li><strong>Kulturfairness:</strong> Gc (verbales Wissen) und Gq (mathematisches Denken) sind
+            unvermeidlich sprach- und bildungsabhängig.</li>
+        <li><strong>Kein Ranking-Anspruch:</strong> Vergleichsgrößen wie „Mensa-Niveau“ oder
+            „Hochbegabung“ werden bewusst nicht verwendet, da sie eine klinisch-standardisierte
+            Diagnostik voraussetzen.</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="m5">
+      <h2 id="m5">5. Literaturhinweise</h2>
+      <p>Zur weiterführenden Einarbeitung in CHC, IRT und Wechsler-Skalen:</p>
+      <ul>
+        <li>Carroll, J. B. (1993). <em>Human cognitive abilities: A survey of factor-analytic studies.</em>
+            Cambridge University Press.</li>
+        <li>Horn, J. L. (1968). Organization of abilities and the development of intelligence. <em>Psychological Review, 75</em>(3), 242–259.</li>
+        <li>McGrew, K. S. (2009). CHC theory and the human cognitive abilities project. <em>Intelligence, 37</em>(1), 1–10.</li>
+        <li>Wechsler, D. (2008). <em>Wechsler Adult Intelligence Scale – Fourth Edition (WAIS-IV).</em> Pearson.</li>
+        <li>Embretson, S. E., &amp; Reise, S. P. (2000). <em>Item Response Theory for Psychologists.</em> Lawrence Erlbaum.</li>
+        <li>Abramowitz, M., &amp; Stegun, I. A. (1972). <em>Handbook of Mathematical Functions.</em> 10. Auflage. Abschnitt 7.1.26.</li>
+      </ul>
+      <p class="muted text-small">Die Auflistung dient der Einordnung des verwendeten Theoriegebäudes. Sie
+         bedeutet ausdrücklich <em>nicht</em>, dass der vorliegende Test von den genannten Autoren geprüft
+         oder validiert wurde.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <nav aria-label="Rechtliche Hinweise">
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="haftung.html">Haftungsausschluss</a>
+        <a href="nutzungsbedingungen.html">Nutzungsbedingungen</a>
+      </nav>
+      <p class="copyright">© <span id="year"></span> Belkis Aslani · Alle Rechte vorbehalten</p>
+    </div>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

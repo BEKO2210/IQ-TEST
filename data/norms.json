@@ -1,0 +1,14 @@
+{
+  "_comment": "Theoretische Referenzwerte pro Broad Ability. mu = Rasch-Erwartungswert der schwierigkeitsgewichteten Summe bei theta=0, sigma = theoretische Streuung. Reproduzierbar aus items-*.json: p_i = 1/(1+exp(b_i)); mu = sum((1+0.3*b_i) * p_i); sigma = sqrt(sum((1+0.3*b_i)^2 * p_i * (1-p_i))).",
+  "_generated_from_items": true,
+  "_reliability_assumption": 0.85,
+  "_weights_g_loading": {"Gf": 0.30, "Gc": 0.20, "Gv": 0.15, "Gs": 0.10, "Gsm": 0.10, "Gq": 0.15},
+  "domains": {
+    "Gf":  { "mu": 5.317, "sigma": 1.640, "items_n": 12 },
+    "Gc":  { "mu": 4.481, "sigma": 1.511, "items_n": 10 },
+    "Gv":  { "mu": 4.326, "sigma": 1.614, "items_n": 10 },
+    "Gs":  { "mu": 9.868, "sigma": 2.108, "items_n": 20 },
+    "Gsm": { "mu": 3.432, "sigma": 1.454, "items_n": 8  },
+    "Gq":  { "mu": 4.397, "sigma": 1.576, "items_n": 10 }
+  }
+}

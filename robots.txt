@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /test.html
+Disallow: /result.html
+
+# Die Testseite selbst und die Ergebnisseite sollen nicht in den Index gelangen,
+# damit das Aufgabenmaterial nicht unbeabsichtigt in Suchmaschinen-Caches landet.
+
+Sitemap: https://example.github.io/IQ-TEST/sitemap.xml

@@ -1,0 +1,19 @@
+/* print.css — Druckversion der Ergebnisseite */
+@media print {
+  .site-header, .site-footer, .btn, button, .actions-row, .no-print { display: none !important; }
+  body { background: #fff !important; color: #000 !important; }
+  .container { width: 100% !important; }
+  .item-panel, .notice, .card, .iq-big, .iq-meta .stat {
+    box-shadow: none !important;
+    border: 1px solid #999 !important;
+    page-break-inside: avoid;
+  }
+  .radar-data { fill: rgba(0,0,0,0.15) !important; stroke: #000 !important; }
+  .radar-dot { fill: #000 !important; }
+  .radar-axis, .radar-ring, .radar-reference { stroke: #555 !important; }
+  .radar-label { fill: #000 !important; }
+  a { color: #000; text-decoration: none; }
+  h1 { font-size: 22pt; }
+  h2 { font-size: 14pt; }
+  p, td, th, li { font-size: 10.5pt; }
+}
