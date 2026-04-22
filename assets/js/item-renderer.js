@@ -104,6 +104,8 @@ export function renderStimulus(container, item) {
 export function renderOptions(container, item, onSelect) {
   container.replaceChildren();
   const options = Array.isArray(item.options) ? item.options : [];
+  container.setAttribute("data-count", String(options.length));
+  container.setAttribute("data-mode", item.options_type === "svg" ? "svg" : "text");
   const letters = ["A", "B", "C", "D", "E", "F", "G", "H"];
   options.forEach((opt, idx) => {
     const btn = document.createElement("button");
