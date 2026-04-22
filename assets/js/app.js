@@ -75,13 +75,34 @@ async function startEngine(demographics) {
     await engine.init();
     if (demographics) engine.setDemographics(demographics);
   } catch (err) {
+    console.error("[app] Engine-Init fehlgeschlagen:", err);
     const errBox = $("#test-error");
     if (errBox) {
       errBox.hidden = false;
-      errBox.textContent = "Der Test konnte nicht geladen werden: " + err.message;
+      errBox.textContent = "Der Test konnte nicht geladen werden: " + err.message +
+        " — Bitte Seite neu laden (Strg/Cmd+Shift+R für frischen Cache).";
     }
     return;
   }
+
+  // Uncaught Errors sichtbar machen (sonst bleibt der Screen einfach leer)
+  window.addEventListener("error", (ev) => {
+    console.error("[app] window.onerror:", ev.error || ev.message);
+    const errBox = $("#test-error");
+    if (errBox) {
+      errBox.hidden = false;
+      errBox.textContent = "Unerwarteter Fehler: " + (ev.error?.message || ev.message) +
+        " — Test-Fortschritt ist lokal gespeichert; Seite bitte neu laden.";
+    }
+  });
+  window.addEventListener("unhandledrejection", (ev) => {
+    console.error("[app] unhandledrejection:", ev.reason);
+    const errBox = $("#test-error");
+    if (errBox) {
+      errBox.hidden = false;
+      errBox.textContent = "Unerwarteter Fehler (async): " + (ev.reason?.message || String(ev.reason));
+    }
+  });
   dom.nextButton.addEventListener("click", () => engine.confirm());
   document.addEventListener("keydown", (ev) => {
     if (ev.key === "Enter" && !dom.nextButton.disabled && !dom.nextButton.hidden) {
