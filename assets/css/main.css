@@ -573,6 +573,27 @@ main > section.container:not(.hero) > p {
 .options-grid[data-mode="svg"] .option-marker { width: 22px; height: 22px; font-size: 0.72rem; }
 .options-grid[data-mode="svg"] .option-content svg { max-width: 64px; max-height: 64px; }
 
+/* Fallback wenn eine Grafik nicht geladen werden konnte */
+.svg-fallback {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 80px; padding: 0.75rem 1rem;
+  background: color-mix(in srgb, var(--danger) 8%, var(--surface));
+  color: var(--danger);
+  border: 1px dashed var(--danger);
+  border-radius: var(--r-sm);
+  font-size: 0.9rem; font-weight: 500;
+}
+#test-error {
+  margin-top: 1rem;
+  padding: 1rem 1.25rem;
+  background: color-mix(in srgb, var(--danger) 10%, var(--surface));
+  border: 1px solid var(--danger);
+  border-radius: var(--r-md);
+  color: var(--danger);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
 /* Actions-Row ist fest verankert unten im Panel und immer sichtbar */
 .actions-row {
   flex-shrink: 0;

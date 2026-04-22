@@ -21,15 +21,38 @@ const ALLOWED_ATTRS = new Set([
   "clip-path", "id", "class"
 ]);
 
-function sanitizeSVG(svgString) {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(svgString, "image/svg+xml");
-  const errorNode = doc.querySelector("parsererror");
-  if (errorNode) return null;
-  const root = doc.documentElement;
-  if (!root || root.tagName.toLowerCase() !== "svg") return null;
-  sanitizeNode(root);
-  return root;
+function sanitizeSVG(svgString, itemId) {
+  try {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(svgString, "image/svg+xml");
+    const errorNode = doc.querySelector("parsererror");
+    if (errorNode) {
+      console.error(`[item-renderer] SVG-Parse-Fehler für ${itemId ?? "?"}`, errorNode.textContent);
+      return null;
+    }
+    const root = doc.documentElement;
+    if (!root || root.tagName.toLowerCase() !== "svg") {
+      console.error(`[item-renderer] Kein <svg>-Root für ${itemId ?? "?"}, gefunden:`, root?.tagName);
+      return null;
+    }
+    sanitizeNode(root);
+    if (root.children.length === 0) {
+      console.warn(`[item-renderer] Sanitizer hat alle Kinder entfernt bei ${itemId ?? "?"}`);
+    }
+    return root;
+  } catch (e) {
+    console.error(`[item-renderer] sanitizeSVG werfend für ${itemId ?? "?"}:`, e);
+    return null;
+  }
+}
+
+function fallbackPlaceholder(label) {
+  const div = document.createElement("div");
+  div.className = "svg-fallback";
+  div.setAttribute("role", "img");
+  div.setAttribute("aria-label", label || "Grafik konnte nicht geladen werden");
+  div.textContent = "⚠ Grafik konnte nicht geladen werden";
+  return div;
 }
 
 function sanitizeNode(node) {
@@ -69,12 +92,14 @@ function sanitizeNode(node) {
 export function renderStimulus(container, item) {
   container.replaceChildren();
   if (item.stimulus_type === "svg") {
-    const svg = sanitizeSVG(item.stimulus);
+    const svg = sanitizeSVG(item.stimulus, item.id);
     if (svg) {
       svg.setAttribute("class", "item-svg");
       container.appendChild(document.importNode(svg, true));
       return;
     }
+    container.appendChild(fallbackPlaceholder(`Grafik zu ${item.id} konnte nicht geladen werden`));
+    return;
   }
   if (item.stimulus_type === "memory") {
     // Memory-Items werden separat via runMemoryDisplay behandelt.
@@ -122,9 +147,9 @@ export function renderOptions(container, item, onSelect) {
     const content = document.createElement("span");
     content.className = "option-content";
     if (item.options_type === "svg") {
-      const svg = sanitizeSVG(String(opt));
+      const svg = sanitizeSVG(String(opt), `${item.id}#opt${idx}`);
       if (svg) content.appendChild(document.importNode(svg, true));
-      else content.textContent = "[Grafik konnte nicht geladen werden]";
+      else content.appendChild(fallbackPlaceholder(`Option ${letters[idx] ?? idx + 1}`));
     } else {
       content.textContent = String(opt);
     }

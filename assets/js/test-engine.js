@@ -11,6 +11,11 @@ import {
   saveSessionProgress, loadSessionProgress, clearSessionProgress
 } from "./storage.js";
 
+const DEBUG = (() => {
+  try { return new URL(window.location.href).searchParams.get("debug") === "1"; }
+  catch (_e) { return false; }
+})();
+
 const DOMAIN_ORDER = ["Gf", "Gv", "Gq", "Gsm", "Gs", "Gc"];
 
 const DOMAIN_INTROS = {
@@ -199,11 +204,45 @@ export class TestEngine {
 
   _render() {
     const step = this.sequence[this.state.index];
-    if (!step) return;
+    if (!step) {
+      console.warn("[test-engine] Sequenz zu Ende, keine step");
+      return;
+    }
+    this._renderToken = (this._renderToken || 0) + 1; // invalidiert async-callbacks
     this._updateProgress();
-    if (step.kind === "intro") return this._renderIntro(step.domain);
-    if (step.kind === "done") return this._renderDone();
-    return this._renderItem(step.item);
+    try {
+      if (step.kind === "intro") return this._renderIntro(step.domain);
+      if (step.kind === "done") return this._renderDone();
+      if (step.kind === "item") {
+        if (DEBUG) console.log(`[test-engine] Render Item ${this.state.index}: ${step.item.id} (${step.item.domain}/${step.item.subtype})`);
+        return this._renderItem(step.item);
+      }
+    } catch (e) {
+      console.error("[test-engine] Render-Fehler:", e, step);
+      this._renderError(e, step);
+    }
+  }
+
+  _renderError(err, step) {
+    this.dom.stimulus.replaceChildren();
+    this.dom.options.replaceChildren();
+    this.dom.question.textContent = "";
+    this.dom.timer.textContent = "";
+    const box = document.createElement("div");
+    box.className = "notice notice-warn";
+    const h = document.createElement("h2");
+    h.textContent = "Eine Aufgabe konnte nicht geladen werden";
+    const p = document.createElement("p");
+    p.textContent = (step?.item?.id ? `Item: ${step.item.id}. ` : "") + "Fehler: " + (err?.message || String(err));
+    const btn = document.createElement("button");
+    btn.type = "button"; btn.className = "btn btn-primary"; btn.textContent = "Überspringen";
+    btn.addEventListener("click", () => {
+      if (step?.item) this._recordAnswer(step.item, null);
+      this._advance();
+    });
+    box.append(h, p, btn);
+    this.dom.stimulus.appendChild(box);
+    this.dom.nextButton.hidden = true;
   }
 
   _updateProgress() {
@@ -263,11 +302,16 @@ export class TestEngine {
       intro.textContent = item.stimulus ?? "";
       this.dom.stimulus.appendChild(intro);
 
+      const token = this._renderToken; // Race-Condition-Schutz
       this.memoryCancel = runMemoryDisplay(
         this.dom.stimulus,
         item.display_sequence,
         item.display_time_ms ?? 5000,
         () => {
+          if (token !== this._renderToken) {
+            if (DEBUG) console.log("[test-engine] Memory-Callback verworfen (Item hat gewechselt)");
+            return;
+          }
           this.memoryPhase = "recall";
           this.dom.question.textContent = item.question ?? "";
           renderOptions(this.dom.options, item, (idx) => this._onSelect(idx));
