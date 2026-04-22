@@ -4,9 +4,8 @@
 
 "use strict";
 
-import { TestEngine } from "./test-engine.js";
-import { computeScores } from "./scoring.js";
-import { renderRadar } from "./chart.js";
+// storage.js ist klein und überall hilfreich → statisch importieren.
+// test-engine, scoring, chart werden bei Bedarf lazy geladen.
 import {
   setDisclaimerAccepted, isDisclaimerAccepted,
   hasLocalStoreConsent, grantLocalStoreConsent,
@@ -70,6 +69,7 @@ async function startEngine(demographics) {
     progressLabel: $("#progress-label"),
     nextButton: $("#next-button")
   };
+  const { TestEngine } = await import("./test-engine.js");
   const engine = new TestEngine(dom);
   try {
     await engine.init();
@@ -116,6 +116,7 @@ async function initResultPage() {
   const norms = await normsResp.json();
   const interpretations = await interpsResp.json();
 
+  const { computeScores } = await import("./scoring.js");
   const result = computeScores(raw.responses, norms);
 
   renderResultHeadline(result);
@@ -166,13 +167,14 @@ function renderDomainTable(result, interpretations) {
   }
 }
 
-function renderRadarChart(result, interpretations) {
+async function renderRadarChart(result, interpretations) {
   const container = $("#radar-container");
   if (!container) return;
   const labels = result.domainScores.map((d) =>
     interpretations.domains?.[d.domain]?.short ?? d.domain
   );
   const values = result.domainScores.map((d) => d.iq);
+  const { renderRadar } = await import("./chart.js");
   renderRadar(container, { labels, values, axisMin: 55, axisMax: 145 });
 }
 
@@ -231,10 +233,74 @@ function setupConsentControls(result) {
   });
 }
 
+// --- Service-Worker-Update-Handling ---
+
+function installUpdateBanner() {
+  if (!("serviceWorker" in navigator)) return;
+  if (location.protocol !== "https:" && location.hostname !== "localhost") return;
+
+  const showBanner = () => {
+    if (document.getElementById("sw-update-banner")) return;
+    const bar = document.createElement("div");
+    bar.id = "sw-update-banner";
+    bar.setAttribute("role", "status");
+    bar.setAttribute("aria-live", "polite");
+    bar.innerHTML =
+      '<span>Neue Version verfügbar.</span>' +
+      '<button type="button" id="sw-update-reload" class="btn btn-primary">Jetzt aktualisieren</button>' +
+      '<button type="button" id="sw-update-dismiss" class="btn btn-ghost" aria-label="Später">Später</button>';
+    document.body.appendChild(bar);
+
+    const reload = () => {
+      if (navigator.serviceWorker.controller && window._newSW) {
+        window._newSW.postMessage({ type: "SKIP_WAITING" });
+      } else {
+        window.location.reload();
+      }
+    };
+    document.getElementById("sw-update-reload").addEventListener("click", reload);
+    document.getElementById("sw-update-dismiss").addEventListener("click", () => bar.remove());
+  };
+
+  navigator.serviceWorker.register("service-worker.js").then((reg) => {
+    // Bei Tab-Aktivierung gelegentlich nach Updates suchen.
+    const triggerUpdate = () => reg.update().catch(() => { /* ignore */ });
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") triggerUpdate();
+    });
+
+    // Falls ein waiting-Worker bereits existiert, sofort Banner zeigen.
+    if (reg.waiting && navigator.serviceWorker.controller) {
+      window._newSW = reg.waiting;
+      showBanner();
+    }
+
+    reg.addEventListener("updatefound", () => {
+      const nw = reg.installing;
+      if (!nw) return;
+      nw.addEventListener("statechange", () => {
+        if (nw.state === "installed" && navigator.serviceWorker.controller) {
+          window._newSW = nw;
+          showBanner();
+        }
+      });
+    });
+  }).catch(() => { /* ignore */ });
+
+  // Nach controllerchange genau einmal neu laden, damit der neue SW greift.
+  let reloading = false;
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (reloading) return;
+    reloading = true;
+    window.location.reload();
+  });
+}
+
 // --- Init ---
 
 document.addEventListener("DOMContentLoaded", async () => {
   setYear();
+  installUpdateBanner();
   if (await initTestPage()) return;
   if (await initResultPage()) return;
 });
