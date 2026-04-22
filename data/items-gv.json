@@ -6,7 +6,8 @@
     "difficulty_b": -1.0,
     "a_discrimination": 1.0,
     "stimulus_type": "svg",
-    "stimulus": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 120' role='img' aria-label='Vorlage: L-förmiges Gebilde'><g fill='none' stroke='currentColor' stroke-width='4' stroke-linejoin='round'><polyline points='50,20 50,90 110,90'/></g><text x='160' y='65' font-size='24' fill='currentColor'>⟳ 90°</text></svg>",
+    "stimulus": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 120' role='img' aria-label='L-förmige Vorlage'><g fill='none' stroke='currentColor' stroke-width='6' stroke-linejoin='round' stroke-linecap='round'><polyline points='50,20 50,90 110,90'/></g></svg>",
+    "transformation": { "icon": "rotate-cw", "label": "90° im Uhrzeigersinn drehen" },
     "question": "Die gezeigte Figur wird um 90° im Uhrzeigersinn gedreht. Welche Option entspricht ihr nach der Drehung?",
     "options_type": "svg",
     "options": [
@@ -27,7 +28,8 @@
     "difficulty_b": 0.3,
     "a_discrimination": 1.0,
     "stimulus_type": "svg",
-    "stimulus": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 140' role='img' aria-label='Vorlage: Pfeil mit Querbalken'><g fill='none' stroke='currentColor' stroke-width='4' stroke-linejoin='round'><line x1='30' y1='70' x2='120' y2='70'/><polyline points='100,50 120,70 100,90'/><line x1='60' y1='50' x2='60' y2='90'/></g><text x='140' y='70' font-size='20' fill='currentColor'>⟲ 180°</text></svg>",
+    "stimulus": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 140' role='img' aria-label='Vorlage: Pfeil nach rechts mit Querbalken'><g fill='none' stroke='currentColor' stroke-width='5' stroke-linejoin='round' stroke-linecap='round'><line x1='30' y1='70' x2='125' y2='70'/><polyline points='105,50 125,70 105,90'/><line x1='60' y1='45' x2='60' y2='95'/></g></svg>",
+    "transformation": { "icon": "rotate-180", "label": "Um 180° drehen" },
     "question": "Die Figur wird um 180° gedreht. Welche Option zeigt das korrekte Ergebnis?",
     "options_type": "svg",
     "options": [
@@ -48,8 +50,9 @@
     "difficulty_b": 1.2,
     "a_discrimination": 1.0,
     "stimulus_type": "svg",
-    "stimulus": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 260 200' role='img' aria-label='3D-Würfel mit Kreis auf Vorderseite und Rechteck auf rechter Seite'><g fill='none' stroke='currentColor' stroke-width='3' stroke-linejoin='round'><polygon points='50,60 130,60 130,140 50,140'/><polygon points='130,60 170,30 170,110 130,140'/><polygon points='50,60 90,30 170,30 130,60'/></g><circle cx='90' cy='100' r='12' fill='currentColor'/><polygon points='145,60 160,52 160,70 145,78' fill='currentColor' opacity='0.85'/><g fill='currentColor' font-size='12' font-family='system-ui,sans-serif'><text x='90' y='170' text-anchor='middle'>Vorne: Kreis</text><text x='200' y='86' text-anchor='start'>Rechts:</text><text x='200' y='102' text-anchor='start'>Rechteck</text><text x='125' y='20' text-anchor='middle'>Oberseite: leer</text></g></svg>",
-    "question": "Der dargestellte Würfel wird um 90° nach rechts (um die vertikale Achse) gedreht. Welche Ansicht entsteht? (• = Kreis, ▪ = Rechteck)",
+    "stimulus": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 180' role='img' aria-label='3D-Würfel: Kreis auf Vorderseite, Rechteck auf rechter Seite, Oberseite leer'><g fill='none' stroke='currentColor' stroke-width='3' stroke-linejoin='round'><polygon points='40,60 120,60 120,140 40,140'/><polygon points='120,60 160,30 160,110 120,140'/><polygon points='40,60 80,30 160,30 120,60'/></g><circle cx='80' cy='100' r='14' fill='currentColor'/><polygon points='135,62 150,54 150,72 135,80' fill='currentColor' opacity='0.85'/></svg>",
+    "transformation": { "icon": "rotate-cw", "label": "Um 90° nach rechts (um vertikale Achse) drehen" },
+    "question": "Der Würfel zeigt: Kreis vorne, Rechteck rechts, Oberseite leer. Nach der Drehung – welche Antwort beschreibt die neue Ansicht korrekt?",
     "options_type": "text",
     "options": [
       "Der Kreis ist nun auf der rechten Seite, das Rechteck verschwindet nach hinten, vorne ist leer.",
@@ -69,7 +72,8 @@
     "difficulty_b": -0.5,
     "a_discrimination": 1.0,
     "stimulus_type": "svg",
-    "stimulus": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 260 140' role='img' aria-label='Papierfalten einfach'><g fill='none' stroke='currentColor' stroke-width='3'><rect x='20' y='20' width='100' height='100'/><line x1='70' y1='20' x2='70' y2='120' stroke-dasharray='4 4'/></g><circle cx='95' cy='70' r='6' fill='currentColor'/><text x='140' y='70' font-size='22' fill='currentColor'>→</text><g fill='none' stroke='currentColor' stroke-width='3'><rect x='170' y='20' width='50' height='100'/></g><circle cx='195' cy='70' r='6' fill='currentColor'/></svg>",
+    "stimulus": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 280 140' role='img' aria-label='Papier vor und nach dem Falten'><g fill='none' stroke='currentColor' stroke-width='3'><rect x='20' y='20' width='100' height='100'/><line x1='70' y1='20' x2='70' y2='120' stroke-dasharray='5 5'/></g><circle cx='95' cy='70' r='6' fill='currentColor'/><g fill='none' stroke='currentColor' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><line x1='140' y1='70' x2='170' y2='70'/><polyline points='162,62 170,70 162,78'/></g><g fill='none' stroke='currentColor' stroke-width='3'><rect x='190' y='20' width='50' height='100'/></g><circle cx='215' cy='70' r='6' fill='currentColor'/></svg>",
+    "transformation": { "icon": "fold", "label": "Einmal vertikal falten, dann Loch stanzen" },
     "question": "Ein quadratisches Papier wird einmal in der Mitte vertikal gefaltet (linke Hälfte auf rechte). Auf die gefaltete Hälfte wird ein Loch gestanzt. Wie sieht das Papier nach dem Entfalten aus?",
     "options_type": "text",
     "options": [
@@ -126,7 +130,8 @@
     "difficulty_b": 0.2,
     "a_discrimination": 1.0,
     "stimulus_type": "svg",
-    "stimulus": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 140' role='img' aria-label='Eingebettete Figur'><g fill='none' stroke='currentColor' stroke-width='3'><polygon points='20,20 60,20 60,60 20,60'/><text x='35' y='95' font-size='12' fill='currentColor'>Gesuchte Figur</text></g><g fill='none' stroke='currentColor' stroke-width='2'><polygon points='120,20 260,20 260,110 120,110'/><polyline points='120,60 200,60 200,20'/><polyline points='200,110 200,60 260,60'/><line x1='120' y1='110' x2='200' y2='60'/><line x1='140' y1='110' x2='140' y2='20'/></g></svg>",
+    "stimulus": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 150' role='img' aria-label='Suchmuster (links) und komplexes Muster (rechts)'><g fill='none' stroke='currentColor' stroke-width='3' stroke-linejoin='round'><rect x='20' y='40' width='60' height='60'/></g><g fill='none' stroke='currentColor' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><line x1='95' y1='70' x2='125' y2='70'/><polyline points='117,62 125,70 117,78'/></g><g fill='none' stroke='currentColor' stroke-width='2.5' stroke-linejoin='round'><rect x='150' y='30' width='150' height='100'/><polyline points='150,75 240,75 240,30'/><polyline points='240,130 240,75 300,75'/><line x1='150' y1='130' x2='240' y2='75'/><line x1='175' y1='130' x2='175' y2='30'/></g></svg>",
+    "transformation": { "icon": "search", "label": "Ist das linke Quadrat im rechten Muster enthalten?" },
     "question": "Enthält das rechte Muster das linke Quadrat als zusammenhängende Teilfigur (gleiche Größe, nicht gedreht)?",
     "options_type": "text",
     "options": [
@@ -162,8 +167,9 @@
     "difficulty_b": -0.6,
     "a_discrimination": 1.0,
     "stimulus_type": "svg",
-    "stimulus": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 100' role='img' aria-label='Vorlage: Buchstabenähnliche Form'><g fill='none' stroke='currentColor' stroke-width='4' stroke-linejoin='round'><polyline points='30,80 30,20 80,20'/><line x1='30' y1='50' x2='65' y2='50'/></g><line x1='130' y1='10' x2='130' y2='90' stroke='currentColor' stroke-dasharray='4 4'/><text x='150' y='55' font-size='14' fill='currentColor'>Spiegelachse</text></svg>",
-    "question": "Wie sieht die Figur nach Spiegelung an der senkrechten Achse rechts von ihr aus?",
+    "stimulus": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 110' role='img' aria-label='Vorlage: hakenförmige Figur mit Spiegelachse'><g fill='none' stroke='currentColor' stroke-width='5' stroke-linejoin='round' stroke-linecap='round'><polyline points='30,90 30,20 80,20'/><line x1='30' y1='55' x2='65' y2='55'/></g><line x1='130' y1='12' x2='130' y2='98' stroke='currentColor' stroke-width='2' stroke-dasharray='5 5'/></svg>",
+    "transformation": { "icon": "mirror-v", "label": "An senkrechter Achse (rechts) spiegeln" },
+    "question": "Wie sieht die Figur nach Spiegelung an der gestrichelten senkrechten Achse aus?",
     "options_type": "svg",
     "options": [
       "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 100' role='img' aria-label='Option A'><g fill='none' stroke='currentColor' stroke-width='4' stroke-linejoin='round'><polyline points='90,80 90,20 40,20'/><line x1='90' y1='50' x2='55' y2='50'/></g></svg>",
